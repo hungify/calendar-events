@@ -7,10 +7,19 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    DayView: typeof import('./src/components/DayView.vue')['default']
+    MenuView: typeof import('./src/components/MenuView.vue')['default']
+    MonthView: typeof import('./src/components/MonthView.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TheCounter: typeof import('./src/components/TheCounter.vue')['default']
     TheFooter: typeof import('./src/components/TheFooter.vue')['default']
     TheInput: typeof import('./src/components/TheInput.vue')['default']
+    ViewDropdown: typeof import('./src/components/ViewDropdown.vue')['default']
+    ViewMenu: typeof import('./src/components/ViewMenu.vue')['default']
+    WeekBox: typeof import('./src/components/WeekBox.vue')['default']
+    WeekGrid: typeof import('./src/components/WeekGrid.vue')['default']
+    WeekView: typeof import('./src/components/WeekView.vue')['default']
+    YearView: typeof import('./src/components/YearView.vue')['default']
   }
 }
