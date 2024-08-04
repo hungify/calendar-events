@@ -6,21 +6,26 @@ import type { ViewOption } from '#/types/date'
 import MonthView from '#/components/MonthView.vue'
 import WeekView from '#/components/WeekView.vue'
 import DayView from '#/components/DayView.vue'
+import { VIEW_OPTIONS } from '#/constants/date'
 
 const currentDate = new Date()
 const currentYear = currentDate.getFullYear().toString()
 const currentMonth = currentDate.toLocaleString('default', { month: 'long' })
 
-const selectedView = ref<ViewOption>({
-  id: 'year',
-  name: 'Year',
-})
+const router = useRouter()
+const route = useRoute()
 
-const views = {
+const selectedView = ref<ViewOption>(VIEW_OPTIONS.find(option => option.id === route.query.view)!)
+
+const views: Record<string, Component> = {
   year: YearView,
   month: MonthView,
   week: WeekView,
   day: DayView,
+}
+
+function handleChangeView(value: ViewOption) {
+  router.push({ query: { view: value.id } })
 }
 </script>
 
@@ -50,7 +55,7 @@ const views = {
             </button>
           </div>
           <div class="hidden md:ml-4 md:flex md:items-center">
-            <ViewDropdown v-model="selectedView" />
+            <ViewDropdown v-model="selectedView" @change="handleChangeView" />
             <div class="ml-6 h-6 w-px bg-gray-300" />
             <button type="button" class="ml-6 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
               Add event
