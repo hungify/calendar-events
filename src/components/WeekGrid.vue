@@ -8,19 +8,15 @@ interface Props {
 
 defineProps<Props>()
 
-function dayClass(dayIdx: number, daysLength: number) {
-  const classes = []
-  if (dayIdx === 0)
-    classes.push('rounded-tl-lg')
-  if (dayIdx === 6)
-    classes.push('rounded-tr-lg')
-  if (dayIdx === daysLength - 7)
-    classes.push('rounded-bl-lg')
-  if (dayIdx === daysLength - 1) {
-    classes.push('rounded-br-lg')
+function cellClass(dayIdx: number, daysLength: number) {
+  const classes = {
+    0: 'rounded-tl-lg',
+    6: 'rounded-tr-lg',
+    [daysLength - 7]: 'rounded-bl-lg',
+    [daysLength - 1]: 'rounded-br-lg',
   }
 
-  return classes.join(' ')
+  return classes[dayIdx]
 }
 </script>
 
@@ -39,7 +35,7 @@ function dayClass(dayIdx: number, daysLength: number) {
       class="py-1.5 hover:bg-gray-100 focus:z-10"
       :class="[
         day.isCurrentMonth ? 'bg-white text-gray-900' : 'bg-gray-50 text-gray-400',
-        dayClass(dayIdx, days.length),
+        cellClass(dayIdx, days.length),
       ]"
     >
       <time

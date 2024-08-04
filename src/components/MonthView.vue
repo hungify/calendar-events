@@ -4,11 +4,36 @@ import {
 } from '@heroicons/vue/20/solid'
 import { getMonthDays } from '#/utils/date'
 import { DEFAULT_DAYS } from '#/constants/date'
+import type { DayInfo } from '#/types/date'
 
 const days = computed(() => {
   return getMonthDays(2024, 6)
 })
 const selectedDay = days.value.find(day => day.isSelected)
+
+function cellClass(day: DayInfo) {
+  let classes = 'flex h-14 flex-col px-3 py-2 hover:bg-gray-100 focus:z-10'
+  if (day.isCurrentMonth) {
+    classes += ' bg-white'
+  }
+  else if (!day.isCurrentMonth) {
+    classes += ' bg-gray-50 text-gray-500'
+  }
+
+  return classes
+}
+
+function timeClass(day: DayInfo) {
+  let classes = 'ml-auto flex h-6 w-6 items-center justify-center rounded-full'
+  if (day.isToday) {
+    classes += ' bg-indigo-600 font-semibold text-white'
+  }
+  else if (day.isSelected) {
+    classes += ' bg-gray-900 font-semibold text-white'
+  }
+
+  return classes
+}
 </script>
 
 <template>
@@ -32,6 +57,8 @@ const selectedDay = days.value.find(day => day.isSelected)
             >
               {{ day.format.D }}
             </time>
+
+            <!-- Events -->
             <ol v-if="day.events.length > 0" class="mt-2">
               <li v-for="event in day.events.slice(0, 2)" :key="event.id">
                 <a :href="event.href" class="group flex">
@@ -50,28 +77,15 @@ const selectedDay = days.value.find(day => day.isSelected)
         <div class="isolate grid w-full grid-cols-7 grid-rows-6 gap-px lg:hidden">
           <button
             v-for="day in days" :key="day.format.LLLL" type="button"
-            class="flex h-14 flex-col px-3 py-2 hover:bg-gray-100 focus:z-10"
-            :class="{
-              'bg-white': day.isCurrentMonth,
-              'bg-gray-50': !day.isCurrentMonth,
-              'font-semibold': day.isSelected || day.isToday,
-              'text-white': day.isSelected,
-              'text-indigo-600': !day.isSelected && day.isToday,
-              'text-gray-900': !day.isSelected && day.isCurrentMonth && !day.isToday,
-              'text-gray-500': !day.isSelected && !day.isCurrentMonth && !day.isToday,
-            }"
+            :class="cellClass(day)"
           >
             <time
               :datetime="day.format.LLLL"
-              class="ml-auto"
-              :class="[{
-                'flex h-6 w-6 items-center justify-center rounded-full': day.isSelected,
-                'bg-indigo-600': day.isSelected && day.isToday,
-                'bg-gray-900': day.isSelected && !day.isToday,
-              }]"
+              :class="timeClass(day)"
             >
               {{ day.format.D }}
             </time>
+
             <span class="sr-only">{{ day.events.length }} events</span>
             <span
               v-if="day.events.length > 0"
