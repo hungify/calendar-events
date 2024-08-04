@@ -67,6 +67,7 @@ export function getMonthDays(year: number, month: number) {
     date.setDate(startDate.getDate() + i)
     calendarDays.push({
       isWeekend: date.getDay() === 0 || date.getDay() === 6,
+      isCurrentWeek: i < 7,
       format: {
         ddd: date.toLocaleString('default', { weekday: 'short' }),
         dddd: date.toLocaleString('default', { weekday: 'long' }),
@@ -77,9 +78,12 @@ export function getMonthDays(year: number, month: number) {
       isToday: isSameDay(date, new Date()),
       isCurrentMonth: date.getMonth() === month,
       events: i === 10
-        ? [{ id: 3, name: 'Date night', time: '6PM', datetime: '2022-01-08T18:00', href: '#' }]
+        ? [
+            { id: 1, name: 'Design review', time: '10AM', datetime: '2022-01-03T10:00', href: '#' },
+            { id: 2, name: 'Sales meeting', time: '2PM', datetime: '2022-01-03T14:00', href: '#' },
+          ]
         : [],
-      isSelected: isSameDay(date, new Date(2022, 6, 8)),
+      isSelected: i === 10,
     })
   }
 
