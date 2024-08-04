@@ -24,6 +24,7 @@ export interface DayInfo {
   isCurrentMonth: boolean
   isToday: boolean
   isWeekend: boolean
+  isCurrentWeek: boolean
   format: {
     ddd: string
     dddd: string
