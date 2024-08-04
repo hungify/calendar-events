@@ -5,27 +5,31 @@ import { VIEW_OPTIONS } from '#/constants/date'
 import type { ViewOption } from '#/types/date'
 
 interface Props {
-  modelValue: string
+  modelValue: ViewOption
 }
 
 interface Emits {
   (e: 'update:modelValue', id: number): void
+  (e: 'change', value: ViewOption): void
 }
 
 defineProps<Props>()
-defineEmits<Emits>()
+const emit = defineEmits<Emits>()
 
-const view = defineModel<ViewOption>('modelValue', {
-  default: {
-    id: 'year',
-    name: 'Year view',
-  },
-})
+const view = defineModel<ViewOption>('modelValue')
+
+function handleChange(item: ViewOption) {
+  view.value = item
+  emit('change', item)
+}
 </script>
 
 <template>
   <Menu as="div" class="relative">
-    <MenuButton type="button" class="flex items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+    <MenuButton
+      v-if="view" type="button"
+      class="flex items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+    >
       {{ view.name }}
       <ChevronDownIcon class="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
     </MenuButton>
@@ -36,9 +40,12 @@ const view = defineModel<ViewOption>('modelValue', {
           <MenuItem
             v-for="item in VIEW_OPTIONS"
             v-slot="{ active }" :key="item.id"
-            @click="view = item"
+            @click="handleChange(item)"
           >
-            <a href="#" class="block px-4 py-2 text-sm" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700']">{{ item.name }}</a>
+            <a
+              href="#" class="block px-4 py-2 text-sm"
+              :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700']"
+            >{{ item.name }}</a>
           </MenuItem>
         </div>
       </MenuItems>
