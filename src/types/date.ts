@@ -8,8 +8,8 @@ export interface DateType {
 }
 
 export interface ViewOption {
-  id: string
-  name: string
+  id: 'day' | 'week' | 'month' | 'year'
+  name: Capitalize<'day' | 'week' | 'month' | 'year'>
 }
 
 export interface EventInfo {
@@ -21,6 +21,8 @@ export interface EventInfo {
 }
 
 export interface DayInfo {
+  id: string
+  date: number
   isCurrentMonth: boolean
   isToday: boolean
   isWeekend: boolean

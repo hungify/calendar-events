@@ -1,37 +1,5 @@
 import type { DayInfo } from '#/types/date'
 
-export function getDayNames(locale = 'en-US') {
-  const formatterShort = new Intl.DateTimeFormat(locale, { weekday: 'short' })
-  const formatterLong = new Intl.DateTimeFormat(locale, { weekday: 'long' })
-  const formatterNarrow = new Intl.DateTimeFormat(locale, { weekday: 'narrow' })
-
-  return Array.from({ length: 7 }, (_, id) => {
-    const date = new Date(Date.UTC(2021, 0, id + 4)) // 2021-01-04 is a Monday
-    return {
-      id,
-      short: formatterShort.format(date),
-      long: formatterLong.format(date),
-      narrow: formatterNarrow.format(date),
-    }
-  })
-}
-
-export function getMonthNames(locale = 'en-US') {
-  const formatterLong = new Intl.DateTimeFormat(locale, { month: 'long' })
-  const formatterShort = new Intl.DateTimeFormat(locale, { month: 'short' })
-  const formatterNarrow = new Intl.DateTimeFormat(locale, { month: 'narrow' })
-
-  return Array.from({ length: 12 }, (_, id) => {
-    const date = new Date(Date.UTC(2021, id, 1))
-    return {
-      id,
-      long: formatterLong.format(date),
-      short: formatterShort.format(date),
-      narrow: formatterNarrow.format(date),
-    }
-  })
-}
-
 export function isSameDay(date1: Date, date2: Date) {
   return (
     date1.getDate() === date2.getDate()
@@ -52,7 +20,43 @@ export function isDateBefore(startDate: Date, endDate: Date): boolean {
   return startDate.getTime() < endDate.getTime()
 }
 
-export function getMonthDays(year: number, month: number) {
+export function getDaysOfCurrentMonth() {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = now.getMonth()
+
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
+
+  const days = []
+  for (let day = 1; day <= daysInMonth; day++) {
+    days.push({
+      id: `${year}-${month}-${day}`,
+      date: day,
+      isWeekend: new Date(year, month, day).getDay() === 0,
+      isCurrentWeek: day <= 7,
+      format: {
+        ddd: new Date(year, month, day).toLocaleString('default', { weekday: 'short' }),
+        dddd: new Date(year, month, day).toLocaleString('default', { weekday: 'long' }),
+        D: day.toString(),
+        DD: day.toString().padStart(2, '0'),
+        LLLL: new Date(year, month, day).toLocaleString('default', { month: 'long' }),
+      },
+      isToday: isSameDay(new Date(year, month, day), new Date()),
+      isCurrentMonth: true,
+      events: day === 10
+        ? [
+            { id: 1, name: 'Design review', time: '10AM', datetime: '2022-01-03T10:00', href: '#' },
+            { id: 2, name: 'Sales meeting', time: '2PM', datetime: '2022-01-03T14:00', href: '#' },
+          ]
+        : [],
+      isSelected: day === 10,
+    })
+  }
+
+  return days
+}
+
+export function getDaysOfMonth(year: number, month: number) {
   const firstDay = new Date(year, month, 1)
 
   // Adjust the first day of the week to ensure the calendar starts with Monday
@@ -64,8 +68,14 @@ export function getMonthDays(year: number, month: number) {
   const calendarDays: DayInfo[] = []
   for (let i = 0; i < totalDays; i++) {
     const date = new Date(startDate)
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    const day = date.getDate()
+
     date.setDate(startDate.getDate() + i)
     calendarDays.push({
+      id: `${year}-${month}-${day}`,
+      date: date.getDate(),
       isWeekend: date.getDay() === 0 || date.getDay() === 6,
       isCurrentWeek: i < 7,
       format: {
@@ -88,20 +98,6 @@ export function getMonthDays(year: number, month: number) {
   }
 
   return calendarDays
-}
-
-export function getYearMonths(year: number) {
-  return Array.from({ length: 12 }, (_, i) => {
-    const date = new Date(year, i, 1)
-    return {
-      format: {
-        MM: (i + 1).toString().padStart(2, '0'),
-        MMM: date.toLocaleString('default', { month: 'short' }),
-        MMMM: date.toLocaleString('default', { month: 'long' }),
-      },
-      days: getMonthDays(year, i),
-    }
-  })
 }
 
 export function getTimeSlots(locale = 'en-US', step = 60) {

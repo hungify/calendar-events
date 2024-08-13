@@ -1,4 +1,6 @@
+import { capitalize } from 'vue'
 import type { ViewOption } from '#/types/date'
+import { objectKeys } from '#/utils/obj'
 
 export const DEFAULT_MONTHS = [
   {
@@ -120,19 +122,20 @@ export const DEFAULT_DAYS = [
   },
 ] as const
 
-export const VIEW_OPTIONS = [{
-  id: 'day',
-  name: 'Day',
-}, {
-  id: 'week',
-  name: 'Week',
-}, {
-  id: 'month',
-  name: 'Month',
-}, {
-  id: 'year',
-  name: 'Year',
-}] as const satisfies ViewOption[]
+export const VIEWS = {
+  day: 'day',
+  week: 'week',
+  month: 'month',
+  year: 'year',
+} as const
+
+export const VIEW_OPTIONS = objectKeys(VIEWS).map((key) => {
+  const value = VIEWS[key]
+  return {
+    id: key,
+    name: capitalize(value),
+  }
+})
 
 export const TIME_SLOTS = [
   {
