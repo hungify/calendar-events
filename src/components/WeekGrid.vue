@@ -31,7 +31,7 @@ function cellClass(dayIdx: number, daysLength: number) {
   </div>
   <div class="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
     <button
-      v-for="(day, dayIdx) in days" :key="day.format.LLLL" type="button"
+      v-for="(day, dayIdx) in days" :key="day.id" type="button"
       class="py-1.5 hover:bg-gray-100 focus:z-10"
       :class="[
         day.isCurrentMonth ? 'bg-white text-gray-900' : 'bg-gray-50 text-gray-400',

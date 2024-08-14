@@ -6,22 +6,16 @@ import {
 import { onMounted, ref } from 'vue'
 import { TIME_SLOTS } from '#/constants/date'
 import type { DayInfo } from '#/types/date'
-import { getMonthDays } from '#/utils/date'
 
-const days = computed(() => {
-  return getMonthDays(new Date().getFullYear(), new Date().getMonth())
-})
+const { daysOfMonth, daysOfWeek } = useCalendar()
+
 const container = ref<HTMLDivElement>()
 const containerNav = ref<HTMLDivElement>()
 const containerOffset = ref<HTMLDivElement>()
 
-const currentWeek = computed(() => {
-  return days.value.filter(day => day.isCurrentWeek)
-})
-
 function timeClass(day: DayInfo) {
   let classes = 'mt-3 flex h-8 w-8 items-center justify-center rounded-full text-base'
-  if (!day.isCurrentMonth) {
+  if (!day.isCurrentMonth || day.isPast) {
     classes += ' text-gray-400'
   }
   else if (day.isToday) {
@@ -54,7 +48,7 @@ onMounted(() => {
         class="sticky top-0 z-10 grid flex-none grid-cols-7 bg-white text-xs text-gray-500 shadow ring-1 ring-black ring-opacity-5 md:hidden"
       >
         <button
-          v-for="day in currentWeek" :key="day.format.LLLL"
+          v-for="day in daysOfWeek" :key="day.id"
           type="button"
           class="flex flex-col items-center pb-1.5 pt-3 text-gray-900"
         >
@@ -163,7 +157,7 @@ onMounted(() => {
           <ChevronRightIcon class="h-5 w-5" aria-hidden="true" />
         </button>
       </div>
-      <WeekGrid :days="days" />
+      <WeekGrid :days="daysOfMonth" />
     </div>
   </div>
 </template>

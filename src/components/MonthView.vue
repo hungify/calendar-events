@@ -2,14 +2,12 @@
 import {
   ClockIcon,
 } from '@heroicons/vue/20/solid'
-import { getMonthDays } from '#/utils/date'
 import { DEFAULT_DAYS } from '#/constants/date'
 import type { DayInfo } from '#/types/date'
 
-const days = computed(() => {
-  return getMonthDays(2024, 6)
-})
-const selectedDay = days.value.find(day => day.isSelected)
+const { daysOfMonth } = useCalendar()
+
+const selectedDay = daysOfMonth.value.find(day => day.isSelected)
 
 function cellClass(day: DayInfo) {
   let classes = 'flex h-14 flex-col px-3 py-2 hover:bg-gray-100 focus:z-10'
@@ -47,7 +45,7 @@ function timeClass(day: DayInfo) {
       <div class="flex bg-gray-200 text-xs leading-6 text-gray-700 lg:flex-auto">
         <div class="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px">
           <div
-            v-for="day in days" :key="day.format.LLLL"
+            v-for="day in daysOfMonth" :key="day.id"
             class="relative px-3 py-2"
             :class="[day.isCurrentMonth ? 'bg-white' : 'bg-gray-50 text-gray-500']"
           >
@@ -76,7 +74,7 @@ function timeClass(day: DayInfo) {
         </div>
         <div class="isolate grid w-full grid-cols-7 grid-rows-6 gap-px lg:hidden">
           <button
-            v-for="day in days" :key="day.format.LLLL" type="button"
+            v-for="day in daysOfMonth" :key="day.id" type="button"
             :class="cellClass(day)"
           >
             <time

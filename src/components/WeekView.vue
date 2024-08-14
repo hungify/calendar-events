@@ -1,26 +1,44 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, EllipsisHorizontalIcon } from '@heroicons/vue/20/solid'
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { getMonthDays, getTimeSlots } from '#/utils/date'
+import { getTimeSlots } from '#/utils/date'
+import type { DayInfo } from '#/types/date'
 
-const container = ref(null)
-const containerNav = ref(null)
-const containerOffset = ref(null)
+const container = ref<HTMLDivElement | null>(null)
+const containerNav = ref<HTMLDivElement | null>(null)
+const containerOffset = ref<HTMLDivElement | null>(null)
 
-const daysOfWeek = computed(() => {
-  const today = new Date()
-  const daysOfMonths = getMonthDays(today.getFullYear(), today.getMonth())
-  return daysOfMonths.filter(day => day.date >= today.getDate() && day.date <= today.getDate() + 6)
-})
+const { daysOfWeek } = useCalendar()
 
 const timesOfDay = computed(() => {
   return getTimeSlots()
 })
 
+function dateClassSM(day: DayInfo) {
+  let classes = 'items-center justify-center font-semibold h-8 w-8'
+
+  if (day.isToday) {
+    classes += ' ml-1.5 flex rounded-full bg-indigo-600 text-white'
+  }
+
+  return classes
+}
+
+function dateClass(day: DayInfo) {
+  let classes = 'mt-1 flex h-8 w-8 items-center justify-center font-semibold'
+
+  if (day.isToday) {
+    classes += ' flex rounded-full bg-indigo-600 text-white'
+  }
+
+  return classes
+}
+
 onMounted(() => {
   // Set the container scroll position based on the current time.
   const currentMinute = new Date().getHours() * 60
+  if (!container.value || !containerNav.value || !containerOffset.value)
+    return
+
   container.value.scrollTop
     = ((container.value.scrollHeight - containerNav.value.offsetHeight - containerOffset.value.offsetHeight)
     * currentMinute)
@@ -32,30 +50,38 @@ onMounted(() => {
   <div ref="container" class="isolate flex flex-auto flex-col overflow-auto bg-white">
     <div style="width: 165%" class="flex max-w-full flex-none flex-col sm:max-w-none md:max-w-full">
       <div ref="containerNav" class="sticky top-0 z-30 flex-none bg-white shadow ring-1 ring-black ring-opacity-5 sm:pr-8">
-        <div class="grid grid-cols-7 text-sm leading-6 text-gray-500 sm:hidden">
+        <div class="grid grid-cols-7 text-sm leading-6 sm:hidden">
           <button
             v-for="day in daysOfWeek" :key="day.date"
-            type="button" class="flex flex-col items-center pb-3 pt-2"
+            type="button"
+            class="flex flex-col items-center pb-3 pt-2"
+            :class="{
+              'text-gray-400': day.isPast,
+              'text-gray-900': !day.isPast,
+            }"
           >
-            {{ day.format.ddd.slice(0, 1) }}
-            <span class="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">{{ day.format.D }}</span>
+            {{ day.format.ddd.at(0) }}
+            <span
+              :class="dateClass(day)"
             >
+              {{ day.format.D }}
+            </span>
           </button>
         </div>
 
-        <div class="-mr-px hidden grid-cols-7 divide-x divide-gray-100 border-r border-gray-100 text-sm leading-6 text-gray-500 sm:grid">
+        <div class="-mr-px hidden grid-cols-7 divide-x divide-gray-100 border-r border-gray-100 text-sm leading-6 sm:grid">
           <div class="col-end-1 w-14" />
-
           <div v-for="day in daysOfWeek" :key="day.date" class="flex items-center justify-center py-3">
             <span
               :class="{
                 'flex items-baseline': day.isToday,
+                'text-gray-400': day.isPast,
+                'text-gray-900': !day.isPast,
               }"
             >
               {{ day.format.ddd }}
               <span
-                class="items-center justify-center font-semibold text-gray-900"
-                :class="{ 'ml-1.5 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white': day.isToday }"
+                :class="dateClassSM(day)"
               >
                 {{ day.date }}
               </span>
