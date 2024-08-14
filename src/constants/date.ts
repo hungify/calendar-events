@@ -1,6 +1,5 @@
 import { capitalize } from 'vue'
-import type { ViewOption } from '#/types/date'
-import { objectKeys } from '#/utils/obj'
+import { objectKeys } from '#/utils/object'
 
 export const DEFAULT_MONTHS = [
   {

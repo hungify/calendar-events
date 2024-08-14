@@ -36,6 +36,7 @@ export interface DayInfo {
   }
   events: EventInfo[]
   isSelected: boolean
+  isPast: boolean
 }
 
 export interface MonthView {
