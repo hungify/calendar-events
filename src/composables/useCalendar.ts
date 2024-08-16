@@ -71,6 +71,20 @@ const useCalendar = createGlobalState(() => {
     return getDaysOfMonth(dateObj.value.getFullYear(), dateObj.value.getMonth())
   })
 
+  const daysOfTwoMonth = computed(() => {
+    const year = dateObj.value.getFullYear()
+    const month = dateObj.value.getMonth()
+    const nextMonth = month === 11 ? 0 : month + 1
+    const nextYear = month === 11 ? year + 1 : year
+    return Array.from({ length: 2 }).map((_, index) => {
+      const monthInfo = DEFAULT_MONTHS[index === 0 ? month : nextMonth]
+      return {
+        ...monthInfo,
+        days: getDaysOfMonth(index === 0 ? year : nextYear, index === 0 ? month : nextMonth),
+      }
+    })
+  })
+
   const daysOfWeek = computed(() => {
     const year = dateObj.value.getFullYear()
     const month = dateObj.value.getMonth()
@@ -87,7 +101,7 @@ const useCalendar = createGlobalState(() => {
     monthsOfYear,
     daysOfMonth,
     daysOfWeek,
-
+    daysOfTwoMonth,
   }
 })
 

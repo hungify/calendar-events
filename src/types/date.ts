@@ -8,8 +8,8 @@ export interface DateType {
 }
 
 export interface ViewOption {
-  id: 'day' | 'week' | 'month' | 'year'
-  name: Capitalize<'day' | 'week' | 'month' | 'year'>
+  id: 'day' | 'week' | 'month' | 'year' | 'double'
+  name: Capitalize<'day' | 'week' | 'month' | 'year' | 'double'>
 }
 
 export interface EventInfo {

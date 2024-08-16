@@ -126,6 +126,7 @@ export const VIEWS = {
   week: 'week',
   month: 'month',
   year: 'year',
+  double: 'double',
 } as const
 
 export const VIEW_OPTIONS = objectKeys(VIEWS).map((key) => {
