@@ -1,4 +1,5 @@
 import { DEFAULT_MONTHS } from '#/constants/date'
+import type { ViewOption } from '#/types/date'
 import { getDaysOfMonth, getDaysOfWeek } from '#/utils/date'
 
 type DateFormat = 'MMMM DD, YYYY' | 'MMMM YYYY' | 'YYYY'
@@ -10,7 +11,7 @@ const useCalendar = createGlobalState(() => {
     return useDateFormat(dateObj.value, format).value
   }
 
-  const nextDate = (type: 'month' | 'year' | 'day' | 'week') => {
+  const nextDate = (type: ViewOption['id']) => {
     const newDate = new Date(dateObj.value)
 
     switch (type) {
@@ -31,7 +32,7 @@ const useCalendar = createGlobalState(() => {
     dateObj.value = newDate
   }
 
-  const prevDate = (type: 'month' | 'year' | 'day' | 'week') => {
+  const prevDate = (type: ViewOption['id']) => {
     const newDate = new Date(dateObj.value)
 
     switch (type) {
