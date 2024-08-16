@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     DayView: typeof import('./src/components/DayView.vue')['default']
+    DoubleView: typeof import('./src/components/DoubleView.vue')['default']
     MenuView: typeof import('./src/components/MenuView.vue')['default']
     MonthView: typeof import('./src/components/MonthView.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
