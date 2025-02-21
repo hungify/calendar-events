@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
-import ViewDropdown from '#/components/ViewDropdown.vue'
-import YearView from '#/components/YearView.vue'
 import type { ViewOption } from '#/types/date'
-import MonthView from '#/components/MonthView.vue'
-import WeekView from '#/components/WeekView.vue'
 import DayView from '#/components/DayView.vue'
-import { VIEW_OPTIONS } from '#/constants/date'
 import DoubleView from '#/components/DoubleView.vue'
+import MonthView from '#/components/MonthView.vue'
+import ViewDropdown from '#/components/ViewDropdown.vue'
+import WeekView from '#/components/WeekView.vue'
+import YearView from '#/components/YearView.vue'
+import { VIEW_OPTIONS } from '#/constants/date'
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
 
 const views: Record<string, Component> = {
   year: YearView,

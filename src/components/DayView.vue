@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import type { DayInfo } from '#/types/date'
+import { TIME_SLOTS } from '#/constants/date'
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from '@heroicons/vue/20/solid'
 import { onMounted, ref } from 'vue'
-import { TIME_SLOTS } from '#/constants/date'
-import type { DayInfo } from '#/types/date'
 
 const { daysOfMonth, daysOfWeek } = useCalendar()
 
@@ -33,10 +33,10 @@ onMounted(() => {
   const currentMinute = new Date().getHours() * 60
   container.value.scrollTop
     = ((container.value.scrollHeight
-    - containerNav.value.offsetHeight
-    - containerOffset.value.offsetHeight)
+      - containerNav.value.offsetHeight
+      - containerOffset.value.offsetHeight)
     * currentMinute)
-    / 1440
+  / 1440
 })
 </script>
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { getTimeSlots } from '#/utils/date'
 import type { DayInfo } from '#/types/date'
+import { getTimeSlots } from '#/utils/date'
+import { onMounted, ref } from 'vue'
 
 const container = ref<HTMLDivElement | null>(null)
 const containerNav = ref<HTMLDivElement | null>(null)
@@ -41,7 +41,7 @@ onMounted(() => {
 
   container.value.scrollTop
     = ((container.value.scrollHeight - containerNav.value.offsetHeight - containerOffset.value.offsetHeight)
-    * currentMinute)
+      * currentMinute)
     / 1440
 })
 </script>

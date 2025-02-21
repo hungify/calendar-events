@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { DEFAULT_DAYS } from '#/constants/date'
 import type { DayInfo } from '#/types/date'
+import { DEFAULT_DAYS } from '#/constants/date'
 
 interface Props {
   days: DayInfo[]

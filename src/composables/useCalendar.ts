@@ -1,5 +1,5 @@
-import { DEFAULT_MONTHS } from '#/constants/date'
 import type { ViewOption } from '#/types/date'
+import { DEFAULT_MONTHS } from '#/constants/date'
 import { getDaysOfMonth, getDaysOfWeek } from '#/utils/date'
 
 type DateFormat = 'MMMM DD, YYYY' | 'MMMM YYYY' | 'YYYY'

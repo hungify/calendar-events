@@ -1,8 +1,8 @@
 <script lang="ts" setup>
+import type { ViewOption } from '#/types/date'
+import { VIEW_OPTIONS } from '#/constants/date'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/20/solid'
-import { VIEW_OPTIONS } from '#/constants/date'
-import type { ViewOption } from '#/types/date'
 
 interface Props {
   modelValue: ViewOption

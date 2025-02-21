@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import type { DayInfo } from '#/types/date'
+import { DEFAULT_DAYS } from '#/constants/date'
 import {
   ClockIcon,
 } from '@heroicons/vue/20/solid'
-import { DEFAULT_DAYS } from '#/constants/date'
-import type { DayInfo } from '#/types/date'
 
 const { daysOfMonth } = useCalendar()
 
